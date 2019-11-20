@@ -29,6 +29,7 @@ public class SqsSourceConnectorConfig extends AbstractConfig {
   private final String queueUrl;
   private final String topics;
   private final Integer waitTimeSeconds;
+  private final Boolean deletionEnable;
 
   private static final ConfigDef CONFIG_DEF = new ConfigDef()
       .define(SqsConnectorConfigKeys.SQS_MAX_MESSAGES.getValue(), Type.INT, 1, Importance.LOW,
@@ -36,7 +37,9 @@ public class SqsSourceConnectorConfig extends AbstractConfig {
       .define(SqsConnectorConfigKeys.SQS_QUEUE_URL.getValue(), Type.STRING, Importance.HIGH, "The URL of the SQS queue to be read from.")
       .define(SqsConnectorConfigKeys.SQS_WAIT_TIME_SECONDS.getValue(), Type.INT, 1, Importance.LOW,
           "Duration (in seconds) to wait for a message to arrive in the queue. Default is 1.")
-      .define(SqsConnectorConfigKeys.TOPICS.getValue(), Type.STRING, Importance.HIGH, "The Kafka topic to be written to.");
+      .define(SqsConnectorConfigKeys.TOPICS.getValue(), Type.STRING, Importance.HIGH, "The Kafka topic to be written to.")
+      .define(SqsConnectorConfigKeys.DELETION_ENABLE.getValue(), Type.BOOLEAN, false, Importance.LOW, "This is for SQS Dead-Letter Queues");
+
 
   public static ConfigDef config() {
     return CONFIG_DEF;
@@ -48,6 +51,7 @@ public class SqsSourceConnectorConfig extends AbstractConfig {
     queueUrl = getString(SqsConnectorConfigKeys.SQS_QUEUE_URL.getValue());
     topics = getString(SqsConnectorConfigKeys.TOPICS.getValue());
     waitTimeSeconds = getInt(SqsConnectorConfigKeys.SQS_WAIT_TIME_SECONDS.getValue());
+    deletionEnable = getBoolean(SqsConnectorConfigKeys.DELETION_ENABLE.getValue());
   }
 
   public Integer getMaxMessages() {
@@ -64,6 +68,10 @@ public class SqsSourceConnectorConfig extends AbstractConfig {
 
   public Integer getWaitTimeSeconds() {
     return waitTimeSeconds;
+  }
+
+  public Boolean isDeletionEnable() {
+    return deletionEnable;
   }
 
 }
