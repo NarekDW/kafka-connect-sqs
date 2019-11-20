@@ -112,7 +112,7 @@ public class SqsSourceConnectorTask extends SourceTask {
     final String receipt = record.sourceOffset().get( SqsConnectorConfigKeys.SQS_MESSAGE_RECEIPT_HANDLE.getValue() )
         .toString() ;
     log.debug( ".commit-record:url={}, receipt-handle={}", config.getQueueUrl(), receipt ) ;
-    client.delete( config.getQueueUrl(), receipt ) ;
+//    client.delete( config.getQueueUrl(), receipt ) ;
     super.commitRecord( record ) ;
   }
 
